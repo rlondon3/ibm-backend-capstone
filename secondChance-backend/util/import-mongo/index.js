@@ -1,10 +1,11 @@
 require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
 const fs = require('fs');
+const path = require('path');
 
 // MongoDB connection URL with authentication options
 let url = `${process.env.MONGO_URL}`;
-let filename = `${__dirname}/secondChanceItems.json`;
+let filename = path.join(__dirname, 'secondChanceItems.json');
 const dbName = 'secondChance';
 const collectionName = 'secondChanceItems';
 
@@ -28,7 +29,7 @@ async function loadData() {
         let cursor = await collection.find({});
         let documents = await cursor.toArray();
 
-        if(documents.length == 0) {
+        if(documents.length === 0) {
             // Insert data into the collection
             const insertResult = await collection.insertMany(data);
             console.log('Inserted documents:', insertResult.insertedCount);
